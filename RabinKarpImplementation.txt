@@ -1,0 +1,30 @@
+//using double-hashing,T.C : O( N + M), S.C :O(M)
+static boolean RabinKarp(char[] a, char[] b) {//search string 'a' and target string 'b'
+		long p1 = 101, p2 = 59, k = (int)(1e9+7);//initializing prime numbers
+		int m = a.length, n = b.length;
+		long power1[] = new long[m+1];
+		long power2[] = new long[m+1];
+		power1[0] = power2[0] = 1;
+		for (int i = 1; i <= m; i++) {//precomputation of powers and taking modulus at every step to handle overflow
+			power1[i] = (power1[i-1]*p1) % k;
+			power2[i] = (power2[i-1]*p2) % k;
+		}
+		long ha1 = 0, ha2 = 0, hb1 = 0, hb2 = 0;
+		for (int i = 0; i < m; i++) {//calculating hashcodes of 'a' and first a.length characters of 'b'
+			ha1 = (ha1 + a[i] * power1[m-i]) % k;
+			ha2 = (ha2 + a[i] * power2[m-i]) % k;
+			hb1 = (hb1 + b[i] * power1[m-i]) % k;
+			hb2 = (hb2 + b[i] * power2[m-i]) % k;
+		}
+		if(ha1 == hb1 && ha2 == hb2)//comparing hashcodes
+			return true;
+		for (int i = m; i < n ; i++) {//calculating hashcodes of next a.length(at each iteration) characters of 'b' with T.C O(1)
+			hb1 = (hb1 - b[i-m] * power1[m] + b[i])*p1;
+			hb1 = (hb1 % k + k)%k;
+			hb2 = (hb2 - b[i-m] * power2[m] + b[i])*p2;
+			hb2 = (hb2 % k + k)%k;
+			if(ha1 == hb1 && ha2 == hb2)//comparing hashcodes;
+				return true;
+		}
+		return false;
+	}
