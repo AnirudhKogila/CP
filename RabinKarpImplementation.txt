@@ -1,5 +1,5 @@
 //using double-hashing,T.C : O( N + M), S.C :O(M)
-static boolean RabinKarp(char[] a, char[] b) {//search string 'a' and target string 'b'
+static boolean RabinKarp(char[] a, char[] b) {//search string(key) 'a' and target string 'b'
 		long p1 = 101, p2 = 59, k = (int)(1e9+7);//initializing prime numbers
 		int m = a.length, n = b.length;
 		long power1[] = new long[m+1];
